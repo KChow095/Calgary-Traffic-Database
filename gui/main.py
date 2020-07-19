@@ -48,11 +48,18 @@ def main():
         if Colour == 'green':
             global right_canvas
             right_canvas.destroy()
-
             right_canvas=Frame(right,width=750,background='green')
             right_canvas.pack(expand=True,fill="both")
 
-            pass
+
+            header = read_func(type_,year_)
+            
+            canvas = ttk.Treeview(right_canvas,columns=np.arange(len(header)),show="headings",height='5')
+            canvas.pack()
+
+            for i in np.arange(len(header)):
+                canvas.heading(i, text=header[i])
+
 
 
     def sort_click(type_,year_):
@@ -68,9 +75,17 @@ def main():
         if Colour == 'green':
             global right_canvas
             right_canvas.destroy()
-
             right_canvas=Frame(right,width=750,background='green')
             right_canvas.pack(expand=True,fill="both")
+            
+            
+            header = read_func(type_,year_)
+
+            #header
+            canvas = ttk.Treeview(right_canvas,columns=np.arange(len(header)),show="headings",height='5')
+            canvas.pack()
+            for i in np.arange(len(header)):
+                canvas.heading(i, text=header[i])
 
             pass
 
