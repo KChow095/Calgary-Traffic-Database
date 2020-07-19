@@ -1,16 +1,20 @@
 import ssl
 import re
-from decimal import Decimal
 from pymongo import MongoClient
 
 class ReadData():
     def __init__(self, year):
+        """
+        A class that takes the year as a string variable and returns a list of eiter the volume or incident information
+        depending on which method is called. Constructor calls the database
+        """
         self.year = year
         self.cluster = MongoClient("mongodb+srv://admin:admin@cluster0.s0bw3.mongodb.net/calgary_traffic_db?retryWrites=true&w=majority", ssl=True,
                         ssl_cert_reqs=ssl.CERT_NONE)
         self.db = self.cluster["calgary_traffic_db"]
 
     def read_volume(self):
+        """Returns a list of all traffic volume data for that particular year"""
         collection = self.db['volume']
         volume_data = []
         for dataset in collection.find({'year': self.year}):
@@ -20,6 +24,7 @@ class ReadData():
         return volume_data
 
     def read_incidents(self):
+        """Returns a list of all incidents data for that particular year"""
         collection = self.db['incidents']
         incident_data = []
         for dataset in collection.find({'start_dt':{"$regex":self.year}}):
@@ -29,6 +34,7 @@ class ReadData():
 
 
 def main():
+    """Testing the methods"""
     r = ReadData('2016')
     print(r.read_incidents())
 
