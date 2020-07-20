@@ -4,6 +4,7 @@ from analysis_commands import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 import numpy as np
+import ReadData as rd
 import matplotlib.pyplot as plt
 
 def main():
@@ -34,7 +35,45 @@ def main():
     Status_out=Label(Status)
 
     #Button click commands
+    def read_click(type_,year_):
 
+        #updates Status
+        global Status_out
+        Status_out.destroy()
+        Message ,Colour = read_msg(type_,year_)
+        Status_out=Label(Status,text=Message,anchor=W,justify=LEFT,background=Colour)
+        Status_out.pack(fill='x')
+
+        #Calls function
+        if Colour == 'green':
+            global right_canvas
+            right_canvas.destroy()
+
+            right_canvas=Frame(right,width=750,background='green')
+            right_canvas.pack(expand=True,fill=BOTH)
+
+            header_label = Label(right_canvas,text = type_)
+            r=rd.ReadData(year_)
+            if type_ == 'Traffic Volume':
+                data = r.read_volume()
+                cols = ('Year','Section Name', 'Latitude','Longitude','Shape Length','Volume')
+            else:
+                data = r.read_incidents()
+                cols = ('Incident Info','Descritpion', 'Start Date','End Date','Quadrant','Longitude','Latitude')
+            
+            list_box = ttk.Treeview(right_canvas, columns=cols, show ='headings')
+            vsb = Scrollbar(right_canvas, orient = VERTICAL, command=list_box.yview)
+            vsb.pack(side = RIGHT, fill = Y)
+            hsb = Scrollbar(right_canvas, orient = HORIZONTAL, command = list_box.xview)
+            hsb.pack(side = BOTTOM, fill = X)
+
+            for col in cols:
+                list_box.heading(col, text = col)
+            #list_box.grid(row = 1, column=0, columnspan = 1)
+            for data_set in data:
+                list_box.insert("","end", values= data_set)
+            list_box.pack(expand=True,fill=BOTH)
+    """
     def read_click(type_,year_):
 
         #updates Status
@@ -59,8 +98,7 @@ def main():
 
             for i in np.arange(len(header)):
                 canvas.heading(i, text=header[i])
-
-
+        """
 
     def sort_click(type_,year_):
 
