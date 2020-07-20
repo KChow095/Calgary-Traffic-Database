@@ -26,7 +26,7 @@ def sort_msg(type_,year_):
     elif year_=="":
         return 'please enter: \nyear to sort' , 'red'
     else:
-        return 'Sort '+type_+" "+year_, 'green'
+        return 'Sorted '+type_+" "+year_, 'green'
     
     
 
@@ -39,7 +39,7 @@ def analysis_msg(type_,year_):
     elif year_=="":
         return 'please enter: \nyear to analyze' , 'red'
     else:
-        return 'Analyze '+type_+" "+year_ , 'green'
+        return 'Analyzed '+type_+" "+year_ , 'green'
     
     
 
@@ -52,21 +52,35 @@ def map_msg (type_,year_):
     elif year_=="":
         return 'please enter: \nyear to map','red'
     else:
-        return 'Map '+type_+" "+year_,'green'
+        return 'Mapped '+type_+" "+year_,'green'
     
     
 
 def read_func(type_,year_):
-    pass
 
+    #header to print to gui
+    if type_== 'Traffic Volume':
+        header =["year", "secname", "the_geom", "shape_leng", "volume"]
+    elif type_ == 'Accidents':
+        header =["incident info", "description", "start_dt", "modified_dt", "quadrant", "longitude", "latitude", "location", "count"]
+
+    return header
 
 def sort_func(type_,year_):
-    pass
+    
+    #header to print to gui
+    if type_== 'Traffic Volume':
+        header =["year", "secname", "the_geom", "shape_leng", "volume"]
+    elif type_ == 'Accidents':
+        header =["incident info", "description", "start_dt", "modified_dt", "quadrant", "longitude", "latitude", "location", "count"]
+
+    return header
         
 
 def analysis_func(type_,year_):
 
     # TO be Removed and replaced with database plot, must return figure to plot
+    #here
     t = np.arange(0.0, 2.0, 0.01)
     s = 1 + np.sin(2 * np.pi * t)
 
@@ -75,6 +89,8 @@ def analysis_func(type_,year_):
 
     ax.set(xlabel='time (s)', ylabel='voltage (mV)',
         title='About as simple as it gets, folks')
+
+    #to here defines the figure to display
 
     return fig 
     
