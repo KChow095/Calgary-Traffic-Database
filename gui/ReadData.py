@@ -36,7 +36,7 @@ class ReadData():
         incident_data = []
         for dataset in collection.find({'start_dt':{"$regex":self.year}}):
             incident_data.append([dataset['incident info'], dataset['description'], dataset['start_dt'],
-                                    dataset['modified_dt'], dataset['quadrant'],dataset['longitude'],dataset['latitude']])
+                                    dataset['modified_dt'], dataset['quadrant'],dataset['latitude'], dataset['longitude']])
         return incident_data
     
     def sort_volume(self):
@@ -51,14 +51,14 @@ class ReadData():
         data = self.read_incidents()
         incident_dict = {}
         incident_list = []
-        for info, descp, start, modified, quad, longi, lati in data:
+        location_list =[]
+        for info, descp, start, modified, quad, lati, longi in data:
             incident_dict[info] = incident_dict.get(info, 0) + 1
         for key, value in incident_dict.items():
-            incident_list.append((key, value))
-        incident_list.sort(key = lambda x:x[1])
+            incident_list.append([value, key, key[-2:]])
+        incident_list.sort()
         incident_list.reverse()
-        return incident_list
-        
+        return incident_list  
 
 def main():
     """Testing the methods"""
