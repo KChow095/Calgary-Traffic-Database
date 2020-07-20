@@ -27,7 +27,7 @@ class ReadData():
             elif self.year == '2018':
                 lat = dataset['the_geom'][38:55]
                 lon = dataset['the_geom'][18:37]
-            volume_data.append([dataset['year'],dataset['secname'],lat,lon,dataset['shape_leng'],dataset['volume']])
+            volume_data.append([dataset['year'],dataset['secname'],lat,lon,dataset['shape_leng'],int(dataset['volume'])])
         return volume_data
 
     def read_incidents(self):
@@ -38,12 +38,32 @@ class ReadData():
             incident_data.append([dataset['incident info'], dataset['description'], dataset['start_dt'],
                                     dataset['modified_dt'], dataset['quadrant'],dataset['longitude'],dataset['latitude']])
         return incident_data
-
+    
+    def sort_volume(self):
+        """Method to call to sort the lists based on the volume with the largest number first, returns a sorted list"""
+        data = self.read_volume()
+        data.sort(key = lambda x:x[5])
+        data.reverse()
+        return data
+    
+    def sort_incidents(self):
+        """Method to call when to retrieve a list of locations where the most incidents happen"""
+        data = self.read_incidents()
+        incident_dict = {}
+        incident_list = []
+        for info, descp, start, modified, quad, longi, lati in data:
+            incident_dict[info] = incident_dict.get(info, 0) + 1
+        for key, value in incident_dict.items():
+            incident_list.append((key, value))
+        incident_list.sort(key = lambda x:x[1])
+        incident_list.reverse()
+        return incident_list
+        
 
 def main():
     """Testing the methods"""
     r = ReadData('2018')
-    print(r.read_volume()[0])
+    print(r.sort_incidents()[:10])
 
 if __name__ == '__main__':
     main()
