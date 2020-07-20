@@ -117,16 +117,27 @@ def main():
             right_canvas.pack(expand=True,fill="both")
             
             
-            header = read_func(type_,year_)
+            header_label = Label(right_canvas,text = type_)
+            r=rd.ReadData(year_)
+            if type_ == 'Traffic Volume':
+                data = r.sort_volume()
+                cols = ('Year','Section Name', 'Latitude','Longitude','Shape Length','Volume')
+            else:
+                data = r.sort_incidents()
+                cols = ('Number of Incidents','Location', 'Quadrant')
+            
+            list_box = ttk.Treeview(right_canvas, columns=cols, show ='headings')
+            vsb = Scrollbar(right_canvas, orient = VERTICAL, command=list_box.yview)
+            vsb.pack(side = RIGHT, fill = Y)
+            hsb = Scrollbar(right_canvas, orient = HORIZONTAL, command = list_box.xview)
+            hsb.pack(side = BOTTOM, fill = X)
 
-            #header
-            canvas = ttk.Treeview(right_canvas,columns=np.arange(len(header)),show="headings",height='5')
-            canvas.pack()
-            for i in np.arange(len(header)):
-                canvas.heading(i, text=header[i])
-
-            pass
-
+            for col in cols:
+                list_box.heading(col, text = col)
+            #list_box.grid(row = 1, column=0, columnspan = 1)
+            for data_set in data:
+                list_box.insert("","end", values= data_set)
+            list_box.pack(expand=True,fill=BOTH)
 
     def analysis_click(type_,year_):
 
@@ -156,8 +167,6 @@ def main():
             #updates to new right_canvas
             
             right_canvas.pack(expand=True,fill="both")
-
-
 
 
     def map_click(type_,year_):
