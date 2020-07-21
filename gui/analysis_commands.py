@@ -31,16 +31,12 @@ def sort_msg(type_,year_):
     
     
 
-def analysis_msg(type_,year_):
+def analysis_msg(type_):
 
-    if type_=="" and year_=="":
-        return 'please enter: \ntype and year to analyze','red'
-    elif type_ =="":
+    if type_=="":
         return 'please enter: \ntype to analyze','red'
-    elif year_=="":
-        return 'please enter: \nyear to analyze' , 'red'
     else:
-        return 'Analyzed '+type_+" "+year_ , 'green'
+        return 'Analyzed '+type_, 'green'
     
     
 
@@ -78,7 +74,7 @@ def sort_func(type_,year_):
     return header
         
 
-def analysis_func(type_,year_):
+def analysis_func(type_):
 
     # TO be Removed and replaced with database plot, must return figure to plot
     #here
@@ -90,15 +86,14 @@ def analysis_func(type_,year_):
     ax.plot(x, y, linestyle = 'dashed', marker = 'o', markerfacecolor = 'blue')
 
     if type_ == 'Traffic Volume':
-        ax.set(xlabel='Year', ylabel='Volume',
-            title='Volume vs. Year')
+        ax.set(xlabel='Year', ylabel='Max Volume',
+            title='Max Volume vs. Year')
     else:
-        ax.set(xlabel='Year', ylabel='Number of Incidents',
-            title='Number of Incidents vs. Year')
+        ax.set(xlabel='Year', ylabel='Max Number of Incidents',
+            title='Max Number of Incidents vs. Year')
     ax.set_xticks(x)
 
     #to here defines the figure to display
-
     return fig 
     
 
