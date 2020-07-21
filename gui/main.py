@@ -22,7 +22,7 @@ def main():
     Status = Frame(left, borderwidth=1, relief="solid")
 
     Year_values=['2016','2017','2018']
-    Type_values=['Accidents','Traffic Volume']
+    Type_values=['Incidents','Traffic Volume']
 
     #creat Type and Year ComboBox
     Type_label = Label(left, text="Type",anchor=W,justify=LEFT)
@@ -55,10 +55,10 @@ def main():
             header_label = Label(right_canvas,text = type_)
             r=rd.ReadData(year_)
             if type_ == 'Traffic Volume':
-                data = r.read_volume()
+                data = r.read_volume(year_)
                 cols = ('Year','Section Name', 'Latitude','Longitude','Shape Length','Volume')
             else:
-                data = r.read_incidents()
+                data = r.read_incidents(year_)
                 cols = ('Incident Info','Descritpion', 'Start Date','End Date','Quadrant','Longitude','Latitude')
             
             list_box = ttk.Treeview(right_canvas, columns=cols, show ='headings')
@@ -120,10 +120,10 @@ def main():
             header_label = Label(right_canvas,text = type_)
             r=rd.ReadData(year_)
             if type_ == 'Traffic Volume':
-                data = r.sort_volume()
+                data = r.sort_volume(year_)
                 cols = ('Year','Section Name', 'Latitude','Longitude','Shape Length','Volume')
             else:
-                data = r.sort_incidents()
+                data = r.sort_incidents(year_)
                 cols = ('Number of Incidents','Location', 'Quadrant')
             
             list_box = ttk.Treeview(right_canvas, columns=cols, show ='headings')
