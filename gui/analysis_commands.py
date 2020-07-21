@@ -4,6 +4,7 @@ from tkinter import ttk
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import ReadData as rd
 
 def read_msg(type_,year_):
     if type_=="" and year_=="":
@@ -81,14 +82,20 @@ def analysis_func(type_,year_):
 
     # TO be Removed and replaced with database plot, must return figure to plot
     #here
-    t = np.arange(0.0, 2.0, 0.01)
-    s = 1 + np.sin(2 * np.pi * t)
+    r = rd.ReadData('2016')
+    x = [2016, 2017, 2018]
+    y = r.yearly_data(type_)
 
     fig, ax = plt.subplots()
-    ax.plot(t, s)
+    ax.plot(x, y, linestyle = 'dashed', marker = 'o', markerfacecolor = 'blue')
 
-    ax.set(xlabel='time (s)', ylabel='voltage (mV)',
-        title='About as simple as it gets, folks')
+    if type_ == 'Traffic Volume':
+        ax.set(xlabel='Year', ylabel='Volume',
+            title='Volume vs. Year')
+    else:
+        ax.set(xlabel='Year', ylabel='Number of Incidents',
+            title='Number of Incidents vs. Year')
+    ax.set_xticks(x)
 
     #to here defines the figure to display
 
