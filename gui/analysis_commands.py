@@ -86,10 +86,10 @@ def analysis_func(type_):
     ax.plot(x, y, linestyle = 'dashed', marker = 'o', markerfacecolor = 'blue')
 
     if type_ == 'Traffic Volume':
-        ax.set(xlabel='Year', ylabel='Max Volume',
+        ax.set(xlabel='Year', ylabel='Traffic Volume',
             title='Max Volume vs. Year')
     else:
-        ax.set(xlabel='Year', ylabel='Max Number of Incidents',
+        ax.set(xlabel='Year', ylabel='Number of Incidents',
             title='Max Number of Incidents vs. Year')
     ax.set_xticks(x)
 
