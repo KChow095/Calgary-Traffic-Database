@@ -158,7 +158,7 @@ def main():
             global right_canvas
             right_canvas.destroy()
 
-            right_canvas=Frame(right,width=750,background='green')
+            right_canvas=Frame(right,width=750)
             right_canvas.pack(expand=True,fill="both")
 
             r = rd.ReadData(year_)
