@@ -60,7 +60,7 @@ def main():
                 cols = ('Year','Section Name', 'Latitude','Longitude','Shape Length','Volume')
             else:
                 data = r.read_incidents(year_)
-                cols = ('Incident Info','Descritpion', 'Start Date','End Date','Quadrant','Longitude','Latitude')
+                cols = ('Incident Info','Description', 'Start Date','End Date','Quadrant','Longitude','Latitude')
             
             list_box = ttk.Treeview(right_canvas, columns=cols, show ='headings')
             vsb = Scrollbar(right_canvas, orient = VERTICAL, command=list_box.yview)
