@@ -110,7 +110,7 @@ class ReadData():
                 if dataset[0] == max_acc:
                     max_cor.append([float(dataset[3]),float(dataset[4])])
             for lat, lon in max_cor:
-                folium.Marker([lat,lon], popup='<strong>Maximum Traffic Accidents</strong>').add_to(map)
+                folium.Marker([lat,lon], popup='<strong>Maximum Traffic Incidents</strong>').add_to(map)
         #Generating the map
         map.save('CalgaryMap.html')
 
