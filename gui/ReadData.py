@@ -18,13 +18,13 @@ class ReadData():
         collection = self.db['volume']
         volume_data = []
         for dataset in collection.find({'year': year}):
-            if self.year == '2016':
+            if year == '2016':
                 lat = dataset['the_geom'][30:37]
                 lon = dataset['the_geom'][18:28]
-            elif self.year == '2017':
+            elif year == '2017':
                 lat = dataset['the_geom'][34:46]
                 lon = dataset['the_geom'][18:32]
-            elif self.year == '2018':
+            elif year == '2018':
                 lat = dataset['the_geom'][38:55]
                 lon = dataset['the_geom'][18:37]
             volume_data.append([dataset['year'],dataset['secname'],lat,lon,dataset['shape_leng'],int(dataset['volume'])])
