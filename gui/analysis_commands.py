@@ -15,9 +15,7 @@ def read_msg(type_,year_):
         return 'please enter: \nyear to read','red'
     else:
         return 'Read '+type_+" "+year_ ,'green'
-
     
-
 def sort_msg(type_,year_):
 
     if type_=="" and year_=="":
@@ -27,9 +25,7 @@ def sort_msg(type_,year_):
     elif year_=="":
         return 'please enter: \nyear to sort' , 'red'
     else:
-        return 'Sorted '+type_+" "+year_, 'green'
-    
-    
+        return 'Sorted '+type_+" "+year_, 'green' 
 
 def analysis_msg(type_):
 
@@ -38,8 +34,6 @@ def analysis_msg(type_):
     else:
         return 'Analyzed '+type_, 'green'
     
-    
-
 def map_msg (type_,year_):
     
     if type_=="" and year_=="":
@@ -49,9 +43,7 @@ def map_msg (type_,year_):
     elif year_=="":
         return 'please enter: \nyear to map','red'
     else:
-        return 'Mapped '+type_+" "+year_,'green'
-    
-    
+        return 'Mapped '+type_+" "+year_,'green' 
 
 def read_func(type_,year_):
 
@@ -94,14 +86,4 @@ def analysis_func(type_):
     ax.set_xticks(x)
 
     #to here defines the figure to display
-    return fig 
-    
-
-
-values = np.arange(0, 2500, 500)
-value_increment = 1000
-
-
-def map_func(type_,year_):
-    pass
-    
+    return fig   
