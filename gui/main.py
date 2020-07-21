@@ -4,6 +4,7 @@ from analysis_commands import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 
 import numpy as np
+import webbrowser
 import ReadData as rd
 import matplotlib.pyplot as plt
 
@@ -73,32 +74,6 @@ def main():
             for data_set in data:
                 list_box.insert("","end", values= data_set)
             list_box.pack(expand=True,fill=BOTH)
-    """
-    def read_click(type_,year_):
-
-        #updates Status
-        global Status_out
-        Status_out.destroy()
-        Message ,Colour = read_msg(type_,year_)
-        Status_out=Label(Status,text=Message,anchor=W,justify=LEFT,background=Colour)
-        Status_out.pack(fill='x')
-
-        #Calls function
-        if Colour == 'green':
-            global right_canvas
-            right_canvas.destroy()
-            right_canvas=Frame(right,width=750,background='green')
-            right_canvas.pack(expand=True,fill="both")
-
-
-            header = read_func(type_,year_)
-            
-            canvas = ttk.Treeview(right_canvas,columns=np.arange(len(header)),show="headings",height='5')
-            canvas.pack()
-
-            for i in np.arange(len(header)):
-                canvas.heading(i, text=header[i])
-        """
 
     def sort_click(type_,year_):
 
@@ -124,7 +99,7 @@ def main():
                 cols = ('Year','Section Name', 'Latitude','Longitude','Shape Length','Volume')
             else:
                 data = r.sort_incidents(year_)
-                cols = ('Number of Incidents','Location', 'Quadrant')
+                cols = ('Number of Incidents','Location', 'Quadrant', 'Latitude','Longitude')
             
             list_box = ttk.Treeview(right_canvas, columns=cols, show ='headings')
             vsb = Scrollbar(right_canvas, orient = VERTICAL, command=list_box.yview)
@@ -144,7 +119,7 @@ def main():
         #updates Status
         global Status_out
         Status_out.destroy()
-        Message , Colour= analysis_msg (type_,year_)
+        Message , Colour= analysis_msg(type_)
         Status_out=Label(Status,text=Message,anchor=W,justify=LEFT,background=Colour)
         Status_out.pack(fill='x')
 
@@ -155,7 +130,7 @@ def main():
             right_canvas.destroy()
             right_canvas=Frame(right,width=750,background='green')
 
-            f=analysis_func(type_,year_)
+            f=analysis_func(type_)
             canvas= FigureCanvasTkAgg(f,right_canvas)
             canvas.draw()
             canvas.get_tk_widget().pack(side=TOP, fill = BOTH, expand=True)
@@ -186,7 +161,13 @@ def main():
             right_canvas=Frame(right,width=750,background='green')
             right_canvas.pack(expand=True,fill="both")
 
-            pass
+            r = rd.ReadData(year_)
+            r.draw_map(type_,year_)
+            url = 'CalgaryMap.html'
+            webbrowser.register('chrome',
+	        None,
+	        webbrowser.BackgroundBrowser("C://Program Files (x86)//Google//Chrome//Application//chrome.exe"))
+            webbrowser.get('chrome').open(url)
 
     #Create Buttons
     Button_read=Button(left,text="Read", padx=50,pady=10,command=lambda: read_click(CB_type.get(),CB_year.get()))
@@ -216,8 +197,6 @@ def main():
     right.pack(side="right", expand=True, fill="both")
 
     root.mainloop()
-
-
 
 if __name__ == "__main__":
     main()
