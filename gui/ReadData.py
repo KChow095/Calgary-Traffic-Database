@@ -1,5 +1,6 @@
 import ssl
 import re
+import folium
 from pymongo import MongoClient
 
 class ReadData():
@@ -51,17 +52,22 @@ class ReadData():
         data = self.read_incidents(year)
         incident_dict = {}
         incident_list = []
-        for info, descp, start, modified, quad, lati, longi in data:
-            incident_dict[info] = incident_dict.get(info, 0) + 1
+        for dataset in data:
+            incident_dict[dataset[0]] = incident_dict.get(dataset[0], 0) + 1
         for key, value in incident_dict.items():
-            key = key.strip('.')
-            incident_list.append([value, key, key[-2:]])
+            incident_list.append([value, key])
+        for incident in incident_list:
+            for dataset in data:
+                if (incident[1] == dataset[0]) and (len(incident)==2):
+                    incident.append(dataset[4])
+                    incident.append(dataset[5])
+                    incident.append(dataset[6])
         incident_list.sort()
         incident_list.reverse()
         return incident_list
 
     def yearly_data(self, type):
-        """Returns a list of total counts for each year"""
+        """Returns a list of maximum values for each year"""
         data_2016 = []
         data_2017 = []
         data_2018 = []
@@ -69,33 +75,49 @@ class ReadData():
         year_2017 =0
         year_2018 =0
         if type == 'Traffic Volume':
-            data_2016 = self.read_volume('2016')
-            data_2017 = self.read_volume('2017')
-            data_2018 = self.read_volume('2018')
-            for dataset in data_2016:
-                year_2016 += dataset[5]
-            for dataset in data_2017:
-                year_2017 += dataset[5]
-            for dataset in data_2018:
-                year_2018 += dataset[5]
+            data_2016 = self.sort_volume('2016')
+            year_2016 = data_2016[0][5]
+            data_2017 = self.sort_volume('2017')
+            year_2017 = data_2017[0][5]
+            data_2018 = self.sort_volume('2018')
+            year_2018 = data_2018[0][5]
         else:
             data_2016 = self.sort_incidents('2016')
+            year_2016 = data_2016[0][0]
             data_2017 = self.sort_incidents('2017')
+            year_2017 = data_2017[0][0]
             data_2018 = self.sort_incidents('2018')
-            for dataset in data_2016:
-                year_2016 += dataset[0]
-            for dataset in data_2017:
-                year_2017 += dataset[0]
-            for dataset in data_2018:
-                year_2018 += dataset[0]
+            year_2018 = data_2018[0][0]
         x = [year_2016,year_2017,year_2018]
         return x
 
+    def draw_map(self, type, year):
+        #Creating the map and plotting the points with the highest volume and most incidents
+        map = folium.Map(location = [51.0447, -114.0719], zoom_start=12)
+        max_cor = []
+        if type == "Traffic Volume":
+            data = self.sort_volume(year)
+            max_vol = data[0][5]
+            for year, sec, lat, lon, shap, vol in data:
+                if vol == max_vol:
+                    max_cor.append([float(lat), float(lon)])
+            for lat, lon in max_cor:
+                folium.Marker([lat,lon], popup='<strong>Maximum Traffic Volume</strong>').add_to(map)
+        else:
+            data = self.sort_incidents(year)
+            max_acc = data[0][0]
+            for dataset in data:
+                if dataset[0] == max_acc:
+                    max_cor.append([float(dataset[3]),float(dataset[4])])
+            for lat, lon in max_cor:
+                folium.Marker([lat,lon], popup='<strong>Maximum Traffic Accidents</strong>').add_to(map)
+        #Generating the map
+        map.save('CalgaryMap.html')
+
 def main():
     """Testing the methods"""
-    r = ReadData('2018')
-    print(r.yearly_data("hello"))
+    r = ReadData('2016')
+    print(r.draw_map("else","2016"))
 
 if __name__ == '__main__':
     main()
-    
