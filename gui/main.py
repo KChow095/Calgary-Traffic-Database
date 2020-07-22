@@ -74,7 +74,67 @@ def main():
             for data_set in data:
                 list_box.insert("","end", values= data_set)
             list_box.pack(expand=True,fill=BOTH)
+    
+    def write_click(type_):
 
+        #updates Status
+        global Status_out
+        Status_out.destroy()
+        Message ,Colour = write_msg(type_)
+        Status_out=Label(Status,text=Message,anchor=W,justify=LEFT,background=Colour)
+        Status_out.pack(fill='x')
+
+        #Calls function
+        if Colour == 'green':
+            global right_canvas
+            right_canvas.destroy()
+
+            right_canvas=Frame(right,width=750,background='green')
+            right_canvas.pack(expand=True,fill=BOTH)
+            entry_canvas = Canvas(right_canvas)
+            entry_canvas.pack(expand = True, fill = BOTH)
+
+            if type_ == "Traffic Volume":
+                labels = ['Year:','Sector Name: ', 'Location: ','Shape Leng: ','Volume: ']
+                list_entries =[]
+                for i in range(len(labels)):
+                    cur_label = 'label' + str(i)
+                    cur_label = Label(entry_canvas, text = labels[i])
+                    cur_label.grid(row=i, column=4, pady = 20, padx = 5)
+                row_count = 0
+                for i in range(len(labels)):
+                    entry_box = Entry(entry_canvas, width=50)
+                    entry_box.grid(column=5, row=row_count)
+                    list_entries.append(entry_box)
+                    row_count += 1
+                input_but = Button(entry_canvas, text ="Insert into Database", command = lambda: submit(list_entries,type_))
+                input_but.grid(column = 5, row = 9)
+            else:
+                labels = ['Incident Info: ', 'Description: ', 'Start Date: ','Modified Date: ','Quadrant: ','Longitude: ','Latitude: ',
+                            'Location: ', 'Count: ', 'Id: ']
+                list_entries =[]
+                for i in range(len(labels)):
+                    cur_label = 'label' + str(i)
+                    cur_label = Label(entry_canvas, text = labels[i])
+                    cur_label.grid(row=i, column=4, pady = 10, padx = 5)
+                row_count=0
+                for i in range(len(labels)):
+                    entry_box = Entry(entry_canvas, width=50)
+                    entry_box.grid(column=5, row=row_count)
+                    list_entries.append(entry_box)
+                    row_count += 1
+                input_but = Button(entry_canvas, text ="Insert into Database", command = lambda: submit(list_entries,type_))
+                input_but.grid(column = 5, row = 16)
+    
+    def submit(new_entry, type_):
+        entry = []
+        for entries in new_entry:
+            entry.append(entries.get())
+        r = rd.ReadData('2016')
+        r.insert_data(entry,type_)
+        for entries in new_entry:
+            entries.delete(0, 'end')
+        
     def sort_click(type_,year_):
 
         #updates Status
@@ -114,7 +174,7 @@ def main():
                 list_box.insert("","end", values= data_set)
             list_box.pack(expand=True,fill=BOTH)
 
-    def analysis_click(type_,year_):
+    def analysis_click(type_):
 
         #updates Status
         global Status_out
@@ -171,8 +231,9 @@ def main():
 
     #Create Buttons
     Button_read=Button(left,text="Read", padx=50,pady=10,command=lambda: read_click(CB_type.get(),CB_year.get()))
+    Button_write=Button(left,text="Write", padx=50,pady=10,command=lambda: write_click(CB_type.get()))
     Button_sort=Button(left,text="Sort", padx=50,pady=10,command=lambda:  sort_click(CB_type.get(),CB_year.get()))
-    Button_analysis=Button(left,text="Analysis",padx=50,pady=10,command=lambda: analysis_click(CB_type.get(),CB_year.get()))
+    Button_analysis=Button(left,text="Analysis",padx=50,pady=10,command=lambda: analysis_click(CB_type.get()))
     Button_map=Button(left,text="Map", padx=50,pady=10,command=lambda: map_click(CB_type.get(),CB_year.get()))
 
     #display Combobox and header labels
@@ -183,6 +244,7 @@ def main():
 
     #display function buttons
     Button_read.pack(fill='x')
+    Button_write.pack(fill='x')
     Button_sort.pack(fill='x')
     Button_analysis.pack(fill='x')
     Button_map.pack(fill='x')
