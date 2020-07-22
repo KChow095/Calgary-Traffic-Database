@@ -15,6 +15,14 @@ def read_msg(type_,year_):
         return 'please enter: \nyear to read','red'
     else:
         return 'Read '+type_+" "+year_ ,'green'
+
+def write_msg(type_):
+    if type_=="":
+        return 'please enter: \ntype to write to' , 'red'
+    elif type_ =="":
+        return 'please enter: \ntype to write to' ,'red'
+    else:
+        return 'Write to '+type_,'green'
     
 def sort_msg(type_,year_):
 
@@ -67,9 +75,6 @@ def sort_func(type_,year_):
         
 
 def analysis_func(type_):
-
-    # TO be Removed and replaced with database plot, must return figure to plot
-    #here
     r = rd.ReadData('2016')
     x = [2016, 2017, 2018]
     y = r.yearly_data(type_)
