@@ -40,6 +40,20 @@ class ReadData():
                                     dataset['modified_dt'], dataset['quadrant'],dataset['latitude'], dataset['longitude']])
         return incident_data
     
+    def insert_data(self, entry_list, type):
+        if type == 'Traffic Volume':
+            new_entry = {'year': entry_list[0], 'secname':entry_list[1],'the_geom':entry_list[2],'shape_leng':entry_list[3],'volume':entry_list[4]} 
+            print(new_entry)
+            collection = self.db['volume']
+            collection.insert_one(new_entry)
+        elif type == 'Incidents':
+            new_entry = {'incident info': entry_list[0], 'description':entry_list[1],'start_dt':entry_list[2],'modified_dt':entry_list[3],
+                        'quadrant':entry_list[4], 'longitude':entry_list[5], 'latitude':entry_list[6], 'location':entry_list[7],'count':entry_list[8],
+                        'id':entry_list[9]}
+            print(new_entry) 
+            collection = self.db['incidents']
+            collection.insert_one(new_entry)
+    
     def sort_volume(self, year):
         """Method to call to sort the lists based on the volume with the largest number first, returns a sorted list"""
         data = self.read_volume(year)
@@ -92,7 +106,7 @@ class ReadData():
         return x
 
     def draw_map(self, type, year):
-        #Creating the map and plotting the points with the highest volume and most incidents
+        """Creating the map and plotting the points with the highest volume and most incidents"""
         map = folium.Map(location = [51.0447, -114.0719], zoom_start=12)
         max_cor = []
         if type == "Traffic Volume":
