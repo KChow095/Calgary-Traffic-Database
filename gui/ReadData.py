@@ -51,7 +51,6 @@ class ReadData():
             new_entry = {'incident info': entry_list[0], 'description':entry_list[1],'start_dt':entry_list[2],'modified_dt':entry_list[3],
                         'quadrant':entry_list[4], 'longitude':entry_list[5], 'latitude':entry_list[6], 'location':entry_list[7],'count':entry_list[8],
                         'id':entry_list[9]}
-            print(new_entry) 
             collection = self.db['incidents']
             collection.insert_one(new_entry)
     
