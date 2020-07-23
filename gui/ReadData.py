@@ -44,7 +44,6 @@ class ReadData():
         #Takes a list of new entries and the type of database and inserts a new entry into the db
         if type == 'Traffic Volume':
             new_entry = {'year': entry_list[0], 'secname':entry_list[1],'the_geom':entry_list[2],'shape_leng':entry_list[3],'volume':entry_list[4]} 
-            print(new_entry)
             collection = self.db['volume']
             collection.insert_one(new_entry)
         elif type == 'Incidents':
